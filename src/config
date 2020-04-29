@@ -1,0 +1,11 @@
+export DIST_NAME=MagicMirrorOS
+export DIST_VERSION=0.1.0
+export MODULES="base(network,docker,disable-services(gui(magicmirroros)), usage-statistics)"
+
+export BASE_IMAGE_ENLARGEROOT=1000
+export BASE_IMAGE_RESIZEROOT=200
+
+export GUI_STARTUP_SCRIPT=/home/pi/scripts/run_magicmirroros
+
+export USAGE_STATISTICS_URL=https://magicmirroros-tracking.gnethomelinux.com
+

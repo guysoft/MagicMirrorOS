@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+  magicmirror:
+    container_name: mm
+    image: karsten13/magicmirror:latest
+    ports:
+      - "8080:8080"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /tmp/.X11-unix:/tmp/.X11-unix
+    devices:
+      - /dev/vchiq
+    environment:
+      LD_LIBRARY_PATH: /opt/vc/lib
+      DISPLAY: unix:0.0
+      TZ: Europe/Berlin
+    network_mode: host
+    restart: unless-stopped
+    command: 
+      - npm
+      - run
+      - start

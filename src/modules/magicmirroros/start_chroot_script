@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+# Build script for MagicMirrorOS
+# Where the MagicMirror magic happends
+# Written by Guy Sheffer
+# GPL V3
+########
+
+
+# Source error handling, leave this in place
+set -x
+set -e
+
+source /common.sh
+install_cleanup_trap
+
+unpack /filesystem/home/pi /home/"${BASE_USER}" "${BASE_USER}"
+unpack /filesystem/home/root /root root
+unpack /filesystem/boot /boot
+
+apt-get update
+apt-get install -y unclutter
+
+
+echo "WantedBy=graphical.target" >> /lib/systemd/system/docker.service
+
+# Unpack root at the end, so files are modified before
+unpack /filesystem/root /
+
+#cleanup
+apt-get clean
+apt-get autoremove -y
