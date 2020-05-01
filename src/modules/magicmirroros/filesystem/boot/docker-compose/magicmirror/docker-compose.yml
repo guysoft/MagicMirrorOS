@@ -7,8 +7,11 @@ services:
     ports:
       - "8080:8080"
     volumes:
+      - /home/pi/magicmirror/mounts/config:/opt/magic_mirror/config
+      - /home/pi/magicmirror/mounts/modules:/opt/magic_mirror/modules
       - /etc/localtime:/etc/localtime:ro
       - /tmp/.X11-unix:/tmp/.X11-unix
+      - /opt/vc:/opt/vc/:ro
     devices:
       - /dev/vchiq
     environment:
@@ -17,7 +20,7 @@ services:
       TZ: Europe/Berlin
     network_mode: host
     restart: unless-stopped
-    command: 
+    command:
       - npm
       - run
       - start

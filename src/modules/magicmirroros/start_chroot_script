@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Build script for MagicMirrorOS
-# Where the MagicMirror magic happends
+# Where the MagicMirror magic happens
 # Written by Guy Sheffer
 # GPL V3
 ########
@@ -20,6 +20,8 @@ unpack /filesystem/boot /boot
 apt-get update
 apt-get install -y unclutter
 
+# add user pi to docker
+usermod -aG docker pi
 
 echo "WantedBy=graphical.target" >> /lib/systemd/system/docker.service
 
