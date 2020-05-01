@@ -18,7 +18,7 @@ unpack /filesystem/home/root /root root
 unpack /filesystem/boot /boot
 
 apt-get update
-apt-get install -y unclutter
+apt-get install -y unclutter git
 
 # add user pi to docker
 usermod -aG docker pi

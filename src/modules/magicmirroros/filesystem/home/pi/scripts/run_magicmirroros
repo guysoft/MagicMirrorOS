@@ -1,4 +1,14 @@
 #!/bin/bash
+
+if [ ! -f /home/pi/magicmirror/run/docker-compose.yml ]; then
+  cd /home/pi/
+  git clone https://gitlab.com/khassel/magicmirror.git
+  cd magicmirror/run
+  cp rpi.yml docker-compose.yml
+  mkdir -p /home/pi/magicmirror/mounts
+fi
+cd /home/pi/magicmirror/run
+docker-compose up -d
 xterm
 # while true
 # do
