@@ -8,8 +8,15 @@ if [ ! -f /home/pi/magicmirror/run/docker-compose.yml ]; then
   mkdir -p /home/pi/magicmirror/mounts
 fi
 cd /home/pi/magicmirror/run
+# start mm
 docker-compose up -d
-xterm
+# pull newest docker image
+docker-compose pull
+# restart if image changed
+docker-compose up -d
+
+sleep infinity
+#xterm
 # while true
 # do
 #     sleep 10
