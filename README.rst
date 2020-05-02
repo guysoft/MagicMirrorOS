@@ -1,10 +1,7 @@
 MagicMirrorOS
 =============
 
-An out of the box `Raspberry Pi <http://www.raspberrypi.org/>`_ Raspbian distro that lets you receive, store and graph sensor information from ESP8266 chips.
-
-It uses and `MagicMirror <https://github.com/MichMich/MagicMirror>`_ to make an interactive mirror.
-
+An out of the box `Raspberry Pi <http://www.raspberrypi.org/>`_ Raspbian distro that lets you run `MagicMirror <https://github.com/MichMich/MagicMirror>`_ to make an interactive mirror.
 
 Where to get it?
 ----------------
