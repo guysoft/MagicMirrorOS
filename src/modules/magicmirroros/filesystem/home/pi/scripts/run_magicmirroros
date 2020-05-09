@@ -16,6 +16,8 @@ docker-compose pull
 docker-compose up -d
 # delete old images
 docker image prune -f
+# disable wlan power save
+sudo iw wlan0 set power_save off
 
 sleep infinity
 #xterm
