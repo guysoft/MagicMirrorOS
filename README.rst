@@ -22,7 +22,7 @@ Requirements
 ------------
 * Raspberrypi all versions should work
 * 2A power supply
-* TBD
+* Pi 2, 3 & 4. The Raspberry Pi 0/1 is currently not supported.
 
 Features
 --------
