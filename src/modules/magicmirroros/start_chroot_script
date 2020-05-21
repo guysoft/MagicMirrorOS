@@ -25,6 +25,9 @@ usermod -aG docker pi
 
 echo "WantedBy=graphical.target" >> /lib/systemd/system/docker.service
 
+# add git repo check to .bashrc
+echo "source /home/pi/scripts/check_git_repo" >> /home/pi/.bashrc
+
 # Unpack root at the end, so files are modified before
 unpack /filesystem/root /
 

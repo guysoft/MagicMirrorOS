@@ -1,0 +1,22 @@
+#!/bin/bash
+
+if [ -f $HOME/magicmirror/.git/index ]; then
+  cd $HOME/magicmirror
+  ymlchanged=$(git diff --stat master origin/master | grep rpi.yml) || true
+  cd $HOME
+  if [ ! -z "$ymlchanged" ]; then
+    echo "-----------------------------------------------------------"
+    echo "There are updates in the magicmirror git repository."
+    echo "Please cd into  ~/magicmirror/run and execute:"
+    echo ""
+    echo "git pull"
+    echo ""
+    echo "Then please update your docker-compose.yml:"
+    echo ""
+    echo "cp rpi.yml docker-compose.yml:"
+    echo ""
+    echo "If you did own changes to docker-compose.yml don't"
+    echo "forget to save it before executing the above cp command ..."
+    echo "-----------------------------------------------------------"
+  fi
+fi
