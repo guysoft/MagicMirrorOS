@@ -21,8 +21,11 @@ if [ ! -f $HOME/magicmirror/run/docker-compose.yml ]; then
   cd magicmirror/run
   cp -v rpi.yml docker-compose.yml &>> $_log
   mkdir -p $HOME/magicmirror/mounts
+else
+  cd $HOME/magicmirror/run
+  # update git repo
+  git fetch
 fi
-cd $HOME/magicmirror/run
 # start mm
 docker-compose up -d &>> $_log
 # pull newest docker image
