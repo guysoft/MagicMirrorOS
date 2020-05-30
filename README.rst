@@ -18,6 +18,17 @@ How to use it?
 #. You can change the settings of the MagicMirror in the files located at ``/boot/docker-compose/magicmirror/``
 
 
+Docker
+------
+
+Under the hood MagicMirrorOS uses `this docker setup <https://gitlab.com/khassel/magicmirror>`_. 
+At the first start the docker image is pulled which takes some time depending on your hardware, so please be patient ...
+
+You find the docker setup at ``~/magicmirror/`` on your raspberrypi. 
+For more information about this setup, how you can start/stop the docker container,
+how to see the logs , ..., please refer to the documentation provided there.
+ 
+
 Requirements
 ------------
 * Raspberrypi all versions should work
