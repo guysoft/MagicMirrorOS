@@ -64,7 +64,7 @@ You can build it assuming you already have docker and docker-compose installed i
     
     git clone https://github.com/guysoft/MagicMirrorOS.git
     cd MagicMirrorOS/src/image
-    wget -c --trust-server-names 'https://downloads.raspberrypi.org/raspbian_lite_latest'
+    wget -c --trust-server-names 'https://downloads.raspberrypi.org/raspios_armhf_latest'
     cd ..
     sudo docker-compose up -d
     sudo docker exec -it magicmirroros-build build
