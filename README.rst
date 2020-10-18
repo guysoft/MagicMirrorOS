@@ -15,7 +15,7 @@ How to use it?
 #. Configure your WiFi by editing ``magicmirroros-wpa-supplicant.txt`` at the root of the flashed card when using it like a flash drive
 #. Boot the Pi from the SD card
 #. Hostname is ``magicmirroros`` (not ``raspberrypi`` as usual), username: ``pi`` and inital password is: ``raspberry``
-#. You can change the settings of the MagicMirror in the files located at ``/boot/docker-compose/magicmirror/``
+#. You can change the settings of the MagicMirror in the files located at `` ~/magicmirror/mounts/``
 
 
 Docker
