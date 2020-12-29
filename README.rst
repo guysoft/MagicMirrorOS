@@ -110,8 +110,7 @@ Usage
 Customization
 ~~~~~
 
-#. If you need to rotate the output change directory to /etc/lightdm and `sudo nano lightdm.conf`
-  #. Add the following into the `[Seat:*]` section of the file
+#. If you need to rotate the output change directory to /etc/lightdm and `sudo nano lightdm.conf`. Add the following into the `[Seat:*]` section of the file
     `display-setup-script=xrandr --output HDMI-1 --rotate left` where 'left' rotates 90 degrees counter clockwise, 'right' rotates 90 degrees clockwise, and 'inverted' rotates 180 degrees
 
 Code contribution would be appreciated!
