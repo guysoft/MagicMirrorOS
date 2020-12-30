@@ -113,4 +113,9 @@ Customization
 #. If you need to rotate the output change directory to /etc/lightdm and `sudo nano lightdm.conf`. Add the following into the `[Seat:*]` section of the file
     ``display-setup-script=xrandr --output HDMI-1 --rotate left`` where 'left' rotates 90 degrees counter clockwise, 'right' rotates 90 degrees clockwise, and 'inverted' rotates 180 degrees
 
+#. To set your local timezone:
+  #. Find your timezone in the "TZ database name" column on [this page](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)
+  #. ``sudo ~/magicmirror/run/docker-compose.yml`` and add an entry under `environment:` for `TZ: <your timezone>`
+  #. ``sudo timedate set-timezone <your timezone>``
+
 Code contribution would be appreciated!
