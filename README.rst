@@ -115,7 +115,7 @@ Customization
 
 #. To set your local timezone:
   #. Find your timezone in the "TZ database name" column on [this page](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)
-  #. ``sudo ~/magicmirror/run/docker-compose.yml`` and add an entry under `environment:` for `TZ: <your timezone>`
+  #. ``nano ~/magicmirror/run/docker-compose.yml`` and add an entry under `environment:` for `TZ: <your timezone>`
   #. ``sudo timedatectl set-timezone <your timezone>``
 
 Code contribution would be appreciated!
