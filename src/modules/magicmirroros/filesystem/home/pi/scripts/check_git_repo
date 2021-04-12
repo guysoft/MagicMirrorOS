@@ -13,7 +13,7 @@ if [ -f $HOME/magicmirror/.git/index ]; then
     echo ""
     echo "Then please update your docker-compose.yml:"
     echo ""
-    echo "cp rpi.yml docker-compose.yml:"
+    echo "cp rpi.yml docker-compose.yml"
     echo ""
     echo "If you did own changes to docker-compose.yml don't"
     echo "forget to save it before executing the above cp command ..."
