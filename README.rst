@@ -15,7 +15,7 @@ How to use it?
 #. Configure your WiFi by editing ``magicmirroros-wpa-supplicant.txt`` at the root of the flashed card when using it like a flash drive
 #. Boot the Pi from the SD card
 #. Hostname is ``magicmirroros`` (not ``raspberrypi`` as usual), username: ``pi`` and inital password is: ``raspberry``
-#. You can change the settings of the MagicMirror in the files located at `` ~/magicmirror/mounts/``
+#. You can change the settings of the MagicMirror in the files located at ``~/magicmirror/mounts/``
 
 
 Docker
@@ -110,12 +110,12 @@ Usage
 Customization
 ~~~~~
 
-#. If you need to rotate the output change directory to /etc/lightdm and `sudo nano lightdm.conf`. Add the following into the `[Seat:*]` section of the file
-    ``display-setup-script=xrandr --output HDMI-1 --rotate left`` where 'left' rotates 90 degrees counter clockwise, 'right' rotates 90 degrees clockwise, and 'inverted' rotates 180 degrees
+#. If you need to rotate the output change directory to ``/etc/lightdm`` and ``sudo nano lightdm.conf``. Add the following into the ``[Seat:*]`` section of the file ``display-setup-script=xrandr --output HDMI-1 --rotate left`` where 'left' rotates 90 degrees counter clockwise, 'right' rotates 90 degrees clockwise, and 'inverted' rotates 180 degrees.
 
 #. To set your local timezone:
-  #. Find your timezone in the "TZ database name" column on [this page](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)
-  #. ``nano ~/magicmirror/run/docker-compose.yml`` and add an entry under `environment:` for `TZ: <your timezone>`
-  #. ``sudo timedatectl set-timezone <your timezone>``
+
+   #. Find your timezone in the "TZ database name" column on `Wikipedia <https://en.wikipedia.org/wiki/List_of_tz_database_time_zones>`_
+   #. ``nano ~/magicmirror/run/docker-compose.yml`` and add an entry under `environment:` for `TZ: <your timezone>`
+   #. ``sudo timedatectl set-timezone <your timezone>``
 
 Code contribution would be appreciated!
