@@ -7,5 +7,10 @@ export BASE_IMAGE_RESIZEROOT=200
 
 export GUI_STARTUP_SCRIPT=/home/pi/scripts/run_magicmirroros
 
+export RPI_IMAGER_NAME="${DIST_NAME} version ${DIST_VERSION}"
+export RPI_IMAGER_DESCRIPTION="MagicMirror² is an open source modular smart mirror platfomr"
+export RPI_IMAGER_ICON="https://raw.githubusercontent.com/guysoft/MagicMirrorOS/devel/media/rpi-imager-MagicMirrorOS.png"
+
+
 export USAGE_STATISTICS_URL=https://magicmirroros-tracking.gnethomelinux.com
 
