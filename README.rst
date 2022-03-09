@@ -6,7 +6,9 @@ An out of the box `Raspberry Pi <http://www.raspberrypi.org/>`_ Raspbian distro 
 Where to get it?
 ----------------
 
-Official mirror is `here <http://unofficialpi.org/Distros/MagicMirrorOS>`_
+You can use the `pi-imager <https://github.com/guysoft/pi-imager/releases>`_ commuity raspberrypi imager here, unofficial section.
+
+Or download directly form the official mirror `here <http://unofficialpi.org/Distros/MagicMirrorOS>`_
 
 How to use it?
 --------------
