@@ -1,28 +1,28 @@
 #!/bin/bash
 
-_log=$HOME/scripts/start.log
+_log="$HOME/scripts/start.log"
 echo "---------log-of-run_magicmirroros---------" > $_log
 
-if [ ! -f $HOME/magicmirror/run/docker-compose.yml ]; then
+if [ ! -f "$HOME/magicmirror/run/docker-compose.yml" ]; then
   sudo update-ca-certificates &>> $_log
   _curl=1
   until [ $_curl -eq 0 ]
   do
-    curl -f -L -s https://gitlab.com
+    curl --output "/tmp/gitlab" -f -L -s "https://gitlab.com/khassel/magicmirror/-/blob/master/README.md"
     _curl=$?
     if [ ! $_curl -eq 0 ]; then
       echo "cannot connect to gitlab.com ..." &>> $_log
       sleep 5s
     fi
   done
-  cd $HOME/
-  rm -rf magicmirror
-  git clone https://gitlab.com/khassel/magicmirror.git &>> $_log
-  cd magicmirror/run
-  cp -v rpi.yml docker-compose.yml &>> $_log
-  mkdir -p $HOME/magicmirror/mounts
+  cd "$HOME"
+  rm -rf "magicmirror"
+  git clone "https://gitlab.com/khassel/magicmirror.git" &>> $_log
+  cd "magicmirror/run"
+  cp -v "$HOME/magicmirror/run/rpi_mmos.yml" "docker-compose.yml" &>> $_log
+  mkdir -p "$HOME/magicmirror/mounts"
 else
-  cd $HOME/magicmirror/run
+  cd "$HOME/magicmirror/run"
   # update git repo
   git fetch
 fi
