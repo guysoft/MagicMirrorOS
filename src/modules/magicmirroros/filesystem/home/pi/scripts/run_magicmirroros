@@ -3,7 +3,7 @@
 _log="$HOME/scripts/start.log"
 echo "---------log-of-run_magicmirroros---------" > $_log
 
-if [ ! -f "$HOME/magicmirror/run/docker-compose.yml" ]; then
+if [[ ! -f "$HOME/magicmirror/run/docker-compose.yml" ]]; then
   sudo update-ca-certificates &>> $_log
   _curl=1
   until [ $_curl -eq 0 ]
@@ -18,23 +18,6 @@ if [ ! -f "$HOME/magicmirror/run/docker-compose.yml" ]; then
   cd "$HOME"
   rm -rf "magicmirror"
   git clone "https://gitlab.com/khassel/magicmirror.git" &>> $_log
-  cd "magicmirror/run"
-  cp -v "$HOME/magicmirror/run/rpi_mmos.yml" "docker-compose.yml" &>> $_log
-  mkdir -p "$HOME/magicmirror/mounts"
-else
-  cd "$HOME/magicmirror/run"
-  # update git repo
-  git fetch
 fi
-# start mm
-docker-compose up -d &>> $_log
-# pull newest docker image
-docker-compose pull &>> $_log
-# restart if image changed
-docker-compose up -d &>> $_log
-# delete old images
-docker image prune -f &>> $_log
-# disable wlan power save
-sudo iw wlan0 set power_save off
 
-sleep infinity
+exec "$HOME/magicmirror/run/run_mmos"
