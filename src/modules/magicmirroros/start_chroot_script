@@ -13,9 +13,9 @@ set -e
 source /common.sh
 install_cleanup_trap
 
-unpack /filesystem/home/pi /home/"${BASE_USER}" "${BASE_USER}"
+unpack /filesystem/home/pi /opt/custompios "${BASE_USER}"
 unpack /filesystem/home/root /root root
-unpack /filesystem/boot /boot
+unpack /filesystem/boot /"${BASE_BOOT_MOUNT_PATH}"
 
 apt-get update
 apt-get install -y unclutter git
