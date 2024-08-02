@@ -1,32 +1,31 @@
 MagicMirrorOS
 =============
 
-An out of the box `Raspberry Pi <http://www.raspberrypi.org/>`_ Raspbian distro that lets you run `MagicMirror <https://github.com/MichMich/MagicMirror>`_ to make an interactive mirror.
+An out of the box `Raspberry Pi <http://www.raspberrypi.org/>`_ Raspbian distro that lets you run `MagicMirror <https://github.com/MagicMirrorOrg/MagicMirror>`_ to make an interactive mirror.
 
 Where to get it?
 ----------------
 
-You can use the `pi-imager <https://github.com/guysoft/pi-imager/releases>`_ commuity raspberrypi imager here, unofficial section.
+Download directly from `here <https://gitlab.com/khassel/magicmirroros/-/packages>`_
 
-Or download directly form the official mirror `here <http://unofficialpi.org/Distros/MagicMirrorOS>`_
+Variants for arm 32-bit (``armhf`` in image name) and arm 64-bit (``arm64`` in image name) are available.
 
 How to use it?
 --------------
 
-#. Unzip the image and install it to an SD card `like any other Raspberry Pi image <https://www.raspberrypi.org/documentation/installation/installing-images/README.md>`_
-#. Configure your WiFi by editing ``magicmirroros-wpa-supplicant.txt`` at the root of the flashed card when using it like a flash drive
+#. Use the `Raspberry Pi Imager <https://www.raspberrypi.com/documentation/computers/getting-started.html#raspberry-pi-imager>`_ to install the zipped image to an SD card
+#. Use the customization settings of the Raspberry Pi Imager for WiFi, hostname and user settings
 #. Boot the Pi from the SD card
-#. Hostname is ``magicmirroros`` (not ``raspberrypi`` as usual), username: ``pi`` and inital password is: ``raspberry``
-#. You can change the settings of the MagicMirror in the files located at ``~/magicmirror/mounts/``
+#. With the first start the docker images are pulled which takes some time, you can follow this process by executing ``journalctl --user -f``
+#. You can change the settings of the MagicMirror in the files located at ``/opt/mm/mounts/``
 
 
 Docker
 ------
 
 Under the hood MagicMirrorOS uses `this docker setup <https://gitlab.com/khassel/magicmirror>`_. 
-At the first start the docker image is pulled which takes some time depending on your hardware, so please be patient ...
 
-You find the docker setup at ``~/magicmirror/`` on your raspberrypi. 
+You find the docker setup at ``/opt/mm/`` on your raspberrypi. 
 For more information about this setup, how you can start/stop the docker container,
 how to see the logs , ..., please refer to the documentation provided there.
  
@@ -35,12 +34,12 @@ Requirements
 ------------
 * Raspberrypi all versions should work
 * 2A power supply
-* Pi 2, 3 & 4. The Raspberry Pi 0/1 is currently not supported.
+* Pi 2, 3, 4 & 5. The Raspberry Pi 0/1 is currently not supported.
 
 Features
 --------
 
-* Runs `MagicMirror <https://github.com/MichMich/MagicMirror>`_ out-of-the-box
+* Runs `MagicMirror <https://github.com/MagicMirrorOrg/MagicMirror>`_ out-of-the-box
 
 
 Developing
@@ -50,7 +49,7 @@ Requirements
 ~~~~~~~~~~~~
 
 #. Docker or Vagrant, docker recommended
-#. Docker-compose - recommended if using docker build method, instructions assume you have it
+#. Docker Compose Plugin - recommended if using docker build method, instructions assume you have it
 #. Downloaded `Raspbian Lite <https://downloads.raspberrypi.org/raspbian_lite/images/>`_ image.
 #. Root privileges for chroot
 #. Bash
@@ -61,24 +60,19 @@ Build MagicMirrorOS
 
 MagicMirrorOS can be built using docker running either on an intel or RaspberryPi (supported ones listed).
 Build requires about 4.5 GB of free space available.
-You can build it assuming you already have docker and docker-compose installed issuing the following commands::
+
+MagicMirrorOS supports building variants, this setup contains 2 variants for the 2 architectures, ``armhf`` and ``arm64``.
+
+You can build it assuming you already have docker and the docker compose plugin installed issuing the following commands::
 
     
+    variant="armhf"
     git clone https://github.com/guysoft/MagicMirrorOS.git
     cd MagicMirrorOS/src/image
-    wget -c --trust-server-names 'https://downloads.raspberrypi.org/raspios_armhf_latest'
+    wget -c --trust-server-names 'https://downloads.raspberrypi.org/raspios_${variant}_latest'
     cd ..
-    sudo docker-compose up -d
-    sudo docker exec -it magicmirroros-build build
-    
-Building MagicMirrorOS Variants
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-MagicMirrorOS supports building variants, which are builds with changes from the main release build. An example and other variants are available in the folder ``src/variants/example``.
-
-To build a variant use::
-
-    sudo docker exec -it magicmirroros-build build [Variant]
+    sudo docker compose up -d
+    sudo docker exec -it magicmirroros-build build $variant
     
 Building Using Vagrant
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -95,13 +89,8 @@ To use it::
 After provisioning the machine, its also possible to run a nightly build which updates from devel using::
 
     cd MagicMirrorOS/src/vagrant
-    run_vagrant_build.sh
-    
-To build a variant on the machine simply run::
-
-    cd MagicMirrorOS/src/vagrant
     run_vagrant_build.sh [Variant]
-
+    
 Usage
 ~~~~~
 
@@ -112,12 +101,19 @@ Usage
 Customization
 ~~~~~
 
-#. If you need to rotate the output change directory to ``/etc/lightdm`` and ``sudo nano lightdm.conf``. Add the following into the ``[Seat:*]`` section of the file ``display-setup-script=xrandr --output HDMI-1 --rotate left`` where 'left' rotates 90 degrees counter clockwise, 'right' rotates 90 degrees clockwise, and 'inverted' rotates 180 degrees.
+#. If you need to rotate the output
 
-#. To set your local timezone:
+   #. edit the file ``/opt/mm/run/.env`` and add e.g the following line ``XRANDR_PARAMS="--output HDMI-1 --rotate left --scale 1.9"`` where 'left' rotates 90 degrees counter clockwise, 'right' rotates 90 degrees clockwise, and 'inverted' rotates 180 degrees, if the scaling is not correct you can use the ``--scale`` parameter.
+   #. Restart the docker container by executing ``docker compose up`` in directory ``/opt/mm/run``
+
+#. The setup tries to set the timezone automatically, if you need to change your local timezone:
 
    #. Find your timezone in the "TZ database name" column on `Wikipedia <https://en.wikipedia.org/wiki/List_of_tz_database_time_zones>`_
-   #. ``nano ~/magicmirror/run/docker-compose.yml`` and add an entry under `environment:` for `TZ: <your timezone>`
-   #. ``sudo timedatectl set-timezone <your timezone>``
+   #. ``nano /opt/mm/run/compose.yaml`` and add::
+
+        environment:
+          TZ: <your timezone>
+        
+   #. Restart the docker container by executing ``docker compose up`` in directory ``/opt/mm/run``
 
 Code contribution would be appreciated!
