@@ -1,0 +1,14 @@
+[Unit]
+Description=magicmirror service
+Requires=docker.service network-online.target
+After=docker.service network-online.target
+
+[Service]
+WorkingDirectory=/opt/mm/run
+RemainAfterExit=yes
+ExecStart=/usr/bin/start_mm
+ExecStop=/usr/bin/stop_mm
+ExecReload=/usr/bin/start_mm
+
+[Install]
+WantedBy=multi-user.target

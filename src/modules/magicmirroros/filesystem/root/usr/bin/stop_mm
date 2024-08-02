@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+cd /opt/mm/run
+
+docker compose down
+
+echo "Done"

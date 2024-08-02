@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+# Make sure we have internet
+until $(curl --output /dev/null --silent --head --fail https://hub.docker.com ); do
+  echo "$(date):  try to connect to docker hub"
+  sleep 5
+done
+
+# disable wlan power_save
+iw wlan0 set power_save off
+
+su -c "/opt/mm/install/install.sh electron" "$(id -nu 1000)"
+
+echo "Done"

@@ -1,5 +1,3 @@
-version: '3.6'
-
 services:
   custompios:
     image: guysoft/custompios:devel
@@ -11,4 +9,3 @@ services:
       - ./:/distro
     devices:
       - /dev/loop-control
-
