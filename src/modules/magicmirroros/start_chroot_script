@@ -40,6 +40,7 @@ gitclone MM_REPO /opt/mm
 # Unpack root at the end, so files are modified before
 unpack /filesystem/root /
 
-chmod +x /usr/bin/start_mm /usr/bin/stop_mm
+chmod +x /usr/bin/start_mm /usr/bin/stop_mm /usr/bin/prepare_qemu
 
+systemctl enable qemu.service
 systemctl enable mm.service

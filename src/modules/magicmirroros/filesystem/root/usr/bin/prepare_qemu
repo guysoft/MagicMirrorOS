@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+if [[ "$(systemd-detect-virt)" == "qemu" ]]; then
+  # needed for getting docker working:
+  update-alternatives --set iptables /usr/sbin/iptables-legacy
+  # needed for extending file system:
+  raspi-config nonint do_expand_rootfs
+  echo "Will reboot now ..."
+  # needed for getting file system changes working:
+  reboot
+fi
+
+echo "Done"

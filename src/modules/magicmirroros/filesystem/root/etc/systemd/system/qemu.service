@@ -1,0 +1,14 @@
+[Unit]
+Before=systemd-user-sessions.service
+Wants=network-online.target
+After=network-online.target
+ConditionPathExists=!/var/lib/qemu-prepared
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/prepare_qemu
+ExecStartPost=/usr/bin/touch /var/lib/qemu-prepared
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
