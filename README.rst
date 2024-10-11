@@ -23,12 +23,12 @@ How to use it?
 Docker
 ------
 
-Under the hood MagicMirrorOS uses `this docker setup <https://gitlab.com/khassel/magicmirror>`_. 
+Under the hood MagicMirrorOS uses `this docker setup <https://gitlab.com/khassel/magicmirror>`_.
 
-You find the docker setup at ``/opt/mm/`` on your raspberrypi. 
+You find the docker setup at ``/opt/mm/`` on your raspberrypi.
 For more information about this setup, how you can start/stop the docker container,
 how to see the logs , ..., please refer to the documentation provided there.
- 
+
 
 Requirements
 ------------
@@ -65,7 +65,7 @@ MagicMirrorOS supports building variants, this setup contains 2 variants for the
 
 You can build it assuming you already have docker and the docker compose plugin installed issuing the following commands::
 
-    
+
     variant="armhf"
     git clone https://github.com/guysoft/MagicMirrorOS.git
     cd MagicMirrorOS/src/image
@@ -73,7 +73,7 @@ You can build it assuming you already have docker and the docker compose plugin 
     cd ..
     sudo docker compose up -d
     sudo docker exec -it magicmirroros-build build $variant
-    
+
 Building Using Vagrant
 ~~~~~~~~~~~~~~~~~~~~~~
 There is a vagrant machine configuration to let build MagicMirrorOS in case your build environment behaves differently. Unless you do extra configuration, vagrant must run as root to have nfs folder sync working.
@@ -90,7 +90,7 @@ After provisioning the machine, its also possible to run a nightly build which u
 
     cd MagicMirrorOS/src/vagrant
     run_vagrant_build.sh [Variant]
-    
+
 Usage
 ~~~~~
 
@@ -103,7 +103,12 @@ Customization
 
 #. If you need to rotate the output
 
-   #. edit the file ``/opt/mm/run/.env`` and add e.g the following line ``XRANDR_PARAMS="--output HDMI-1 --rotate left --scale 1.9"`` where 'left' rotates 90 degrees counter clockwise, 'right' rotates 90 degrees clockwise, and 'inverted' rotates 180 degrees, if the scaling is not correct you can use the ``--scale`` parameter.
+   #. edit the file ``/opt/mm/run/.env`` and add e.g the following line ``XRANDR_PARAMS="--output inverted"`` to rotate the output by 180 degrees, or ``XRANDR_PARAMS="--output left"`` to rotate the output by 90 degrees, to see all possible options login to the container with ``docker exec -it xserver /bin/bash`` and then you can look at all the options available with ``xrandr --help``.
+   #. Restart the docker container by executing ``docker compose up`` in directory ``/opt/mm/run``
+
+#. If you need to change the delay for the xrandr options to be applied, e.g. if the display is rotated when MagicMirror is starting, it can result in a black screen. To avoid this, increase the delay.
+
+   #. edit the file ``/opt/mm/run/.env`` and add e.g the following line ``XRANDR_DELAY=10s`` to apply the xrandr options after 10 seconds, the default value is 5s.
    #. Restart the docker container by executing ``docker compose up`` in directory ``/opt/mm/run``
 
 #. The setup tries to set the timezone automatically, if you need to change your local timezone:
@@ -113,7 +118,7 @@ Customization
 
         environment:
           TZ: <your timezone>
-        
+
    #. Restart the docker container by executing ``docker compose up`` in directory ``/opt/mm/run``
 
 Code contribution would be appreciated!
