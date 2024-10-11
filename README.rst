@@ -103,7 +103,7 @@ Customization
 
 #. If you need to rotate the output
 
-   #. edit the file ``/opt/mm/run/.env`` and add e.g the following line ``XRANDR_PARAMS="--output inverted"`` to rotate the output by 180 degrees, or ``XRANDR_PARAMS="--output left"`` to rotate the output by 90 degrees, to see all possible options login to the container with ``docker exec -it xserver /bin/bash`` and then you can look at all the options available with ``xrandr --help``.
+   #. edit the file ``/opt/mm/run/.env`` and add e.g the following line ``XRANDR_PARAMS="--orientation inverted"`` to rotate the output by 180 degrees, or ``XRANDR_PARAMS="--orientation left"`` to rotate the output by 90 degrees, to see all possible options login to the container with ``docker exec -it xserver /bin/bash`` and then you can look at all the options available with ``xrandr --help``.
    #. Restart the docker container by executing ``docker compose up`` in directory ``/opt/mm/run``
 
 #. If you need to change the delay for the xrandr options to be applied, e.g. if the display is rotated when MagicMirror is starting, it can result in a black screen. To avoid this, increase the delay.
