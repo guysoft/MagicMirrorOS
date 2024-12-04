@@ -32,7 +32,6 @@ how to see the logs , ..., please refer to the documentation provided there.
 
 Requirements
 ------------
-* Raspberrypi all versions should work
 * 2A power supply
 * Pi 2, 3, 4 & 5. The Raspberry Pi 0/1 is currently not supported.
 
