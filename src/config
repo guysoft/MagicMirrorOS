@@ -1,5 +1,5 @@
 export DIST_NAME=MagicMirrorOS
-export DIST_VERSION=1.0.0
+export DIST_VERSION=2.0.0
 export MODULES="base(magicmirroros, usage-statistics)"
 
 BASE_IGNORE_VARIANT_NAME=yes

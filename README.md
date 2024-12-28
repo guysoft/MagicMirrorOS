@@ -1,0 +1,142 @@
+# MagicMirrorOS
+
+An out of the box [Raspberry Pi](http://www.raspberrypi.org/) Raspbian distro that lets you run [MagicMirror](https://github.com/MagicMirrorOrg/MagicMirror) to make an interactive mirror.
+
+## Where to get it?
+
+Download directly from [here](https://gitlab.com/khassel/magicmirroros/-/packages)
+
+Variants for arm 32-bit (`armhf` in image name) and arm 64-bit (`arm64` in image name) are available.
+
+## How to use it?
+
+1. Use the [Raspberry Pi Imager](https://www.raspberrypi.com/documentation/computers/getting-started.html#raspberry-pi-imager) to install the zipped image to an SD card
+2. Use the customization settings of the Raspberry Pi Imager for WiFi, hostname and user settings
+3. Boot the Pi from the SD card
+4. With the first start the docker images are pulled which takes some time, you can follow this process by executing `journalctl --user -f`
+5. You can change the settings of the MagicMirror in the files located at `/opt/mm/mounts/`
+
+
+# Docker
+
+Under the hood MagicMirrorOS uses [this docker setup](https://gitlab.com/khassel/magicmirror).
+
+You find the docker setup at `/opt/mm/` on your raspberrypi.
+For more information about this setup, how you can start/stop the docker container,
+how to see the logs , ..., please refer to the documentation provided there.
+
+
+## Requirements
+- 2A power supply
+- Pi Zero2w, 2, 3, 4 & 5. The Raspberry Pi 0/1 is currently not supported.
+
+## Features
+
+- Runs [MagicMirror](https://github.com/MagicMirrorOrg/MagicMirror) out-of-the-box
+
+
+## Developing
+
+### Requirements
+
+1. Docker or Vagrant, docker recommended
+2. Docker Compose Plugin - recommended if using docker build method, instructions assume you have it
+3. Downloaded [Raspbian Lite](https://downloads.raspberrypi.org/raspbian_lite/images/) image.
+4. Root privileges for chroot
+5. Bash
+6. sudo (the script itself calls it, running as root without sudo won't work)
+
+### Build MagicMirrorOS
+
+MagicMirrorOS can be built using docker running either on an intel or RaspberryPi (supported ones listed).
+Build requires about 4.5 GB of free space available.
+
+MagicMirrorOS supports building variants, this setup contains 2 variants for the 2 architectures, `armhf` and `arm64`.
+
+You can build it assuming you already have docker and the docker compose plugin installed issuing the following commands:
+
+```bash
+variant="armhf"
+git clone https://github.com/guysoft/MagicMirrorOS.git
+cd MagicMirrorOS/src/image
+wget -c --trust-server-names 'https://downloads.raspberrypi.org/raspios_${variant}_latest'
+cd ..
+sudo docker compose up -d
+sudo docker exec -it magicmirroros-build build $variant
+```
+
+### Building Using Vagrant
+
+There is a vagrant machine configuration to let build MagicMirrorOS in case your build environment behaves differently. Unless you do extra configuration, vagrant must run as root to have nfs folder sync working.
+
+To use it:
+
+```bash
+sudo apt-get install vagrant nfs-kernel-server
+sudo vagrant plugin install vagrant-nfs_guest
+sudo modprobe nfs
+cd MagicMirrorOS/src/vagrant
+sudo vagrant up
+```
+
+After provisioning the machine, its also possible to run a nightly build which updates from devel using:
+
+```bash
+cd MagicMirrorOS/src/vagrant
+run_vagrant_build.sh [Variant]
+```
+
+### Usage
+
+1. If needed, override existing config settings by creating a new file `src/config.local`. You can override all settings found in `src/config`. If you need to override the path to the Raspbian image to use for building MagicMirrorOS, override the path to be used in `ZIP_IMG`. By default, the most recent file matching `*-raspbian.zip` found in `src/image` will be used.
+2. Run `src/build_dist` as root.
+3. The final image will be created in `src/workspace`
+
+### Customization
+
+#### Rotating the output
+
+- Option 1
+
+  - Edit the file `/opt/mm/run/.env` and add e.g. the following line `RANDR_PARAMS="--output HDMI-A-1 --transform 180"` to rotate the output by 180 degrees, or `RANDR_PARAMS="--output HDMI-A-1 --transform 90"` to rotate the output by 90 degrees, to see all possible options login to the container with `docker exec -it labwc bash` and then you can look at all the options available with `wlr-randr --help`. To get the parameter for `--output` you can call `wlr-randr`, you find the parameter in the first line (in this example `HDMI-A-1`).
+  - Restart the docker container by executing `docker compose up` in directory `/opt/mm/run`.
+
+  If you need to change the delay for the wlr-randr options to be applied, e.g. if the display is rotated when MagicMirror is starting, it can result in a black screen. To avoid this, increase the delay (on slow systems e.g. pi < v4 you have to increase this up to 80s).
+
+  - Edit the file `/opt/mm/run/.env` and add e.g. the following line `RANDR_DELAY=10s` to apply the wlr-randr options after 10 seconds, the default value is 5s.
+  - Restart the docker container by executing `docker compose up` in directory `/opt/mm/run`.
+
+- Option 2
+
+  You can use css for rotating. Edit the file `/opt/mm/mounts/css/custom.css` and the following lines. You can use `90deg` or `-90deg`.
+
+  ```css
+  body {
+    margin: 0;
+    position: absolute;
+    transform: rotate(90deg);
+    transform-origin: bottom left;
+    width: 100vh;
+    height: 100vw;
+    object-fit: cover;
+    top: -100vw;
+    visibility: visible;
+  }
+  ```
+
+
+#### Changing timezone
+
+The setup tries to set the timezone automatically, if you need to change your local timezone:
+
+- Find your timezone in the "TZ database name" column on [Wikipedia](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)
+- `nano /opt/mm/run/compose.yaml` and add:
+
+  ```bash
+        environment:
+          TZ: <your timezone>
+  ```
+
+- Restart the docker container by executing `docker compose up` in directory `/opt/mm/run`.
+
+> Code contribution would be appreciated!
