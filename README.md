@@ -108,22 +108,7 @@ run_vagrant_build.sh [Variant]
 
 - Option 2
 
-  You can use css for rotating. Edit the file `/opt/mm/mounts/css/custom.css` and the following lines. You can use `90deg` or `-90deg`.
-
-  ```css
-  body {
-    margin: 0;
-    position: absolute;
-    transform: rotate(90deg);
-    transform-origin: bottom left;
-    width: 100vh;
-    height: 100vw;
-    object-fit: cover;
-    top: -100vw;
-    visibility: visible;
-  }
-  ```
-
+  You can use css for rotating. Edit the file `/opt/mm/mounts/css/custom.css` and add the lines provided in [this forum post](https://forum.magicmirror.builders/topic/9707/save-performance-when-rotating-screen-e-g-on-raspberry-pi).
 
 #### Changing timezone
 
