@@ -27,8 +27,8 @@ echo \
   tee /etc/apt/sources.list.d/docker.list > /dev/null
 
 apt-get update
-apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
-
+apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin dphys-swapfile
+apt-get remove -y systemd-zram-generator
 apt-get clean
 rm -rf /var/lib/apt/lists/*
 
@@ -43,7 +43,10 @@ unpack /filesystem/root /
 chmod +x /usr/bin/start_mm /usr/bin/stop_mm /usr/bin/prepare_qemu
 
 # increase swap file
-sed -i 's|CONF_SWAPSIZE=.*|CONF_SWAPSIZE=1024|g' /etc/dphys-swapfile
+sed -i 's|.*CONF_SWAPSIZE=.*|CONF_SWAPSIZE=1024|g' /etc/dphys-swapfile
 
 systemctl enable qemu.service
 systemctl enable mm.service
+
+# Remove ssh "fix"
+sed -i 's|IPQoS.*||g' /etc/ssh/sshd_config
