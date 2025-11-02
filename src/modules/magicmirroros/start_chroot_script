@@ -47,6 +47,3 @@ sed -i 's|.*CONF_SWAPSIZE=.*|CONF_SWAPSIZE=1024|g' /etc/dphys-swapfile
 
 systemctl enable qemu.service
 systemctl enable mm.service
-
-# ssh fix needs update for working with trixie
-sed -i 's|IPQoS.*|IPQoS=throughput|g' /etc/ssh/sshd_config
