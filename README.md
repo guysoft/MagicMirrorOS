@@ -1,38 +1,93 @@
 # MagicMirrorOS
 
-An out of the box [Raspberry Pi](http://www.raspberrypi.org/) Raspbian distro that lets you run [MagicMirror](https://github.com/MagicMirrorOrg/MagicMirror) to make an interactive mirror.
-
-## Where to get it?
-
-Download directly from [here](https://gitlab.com/khassel/magicmirroros/-/packages)
-
-Variants for arm 32-bit (`armhf` in image name) and arm 64-bit (`arm64` in image name) are available.
-
-## How to use it?
-
-1. Use the [Raspberry Pi Imager](https://www.raspberrypi.com/documentation/computers/getting-started.html#raspberry-pi-imager) to install the zipped image to an SD card
-2. Use the customization settings of the Raspberry Pi Imager for WiFi, hostname and user settings
-3. Boot the Pi from the SD card
-4. With the first start the docker images are pulled which takes some time, you can follow this process by executing `journalctl --user -f`
-5. You can change the settings of the MagicMirror in the files located at `/opt/mm/mounts/`
-
-
-# Docker
-
-Under the hood MagicMirrorOS uses [this docker setup](https://gitlab.com/khassel/magicmirror).
-
-You find the docker setup at `/opt/mm/` on your raspberrypi.
-For more information about this setup, how you can start/stop the docker container,
-how to see the logs , ..., please refer to the documentation provided there.
+An out of the box [Raspberry Pi](http://www.raspberrypi.org/) Raspbian distro that lets you run [MagicMirror²](https://github.com/MagicMirrorOrg/MagicMirror) to make an interactive mirror.
 
 
 ## Requirements
 - 2A power supply
-- Pi Zero2w, 2, 3, 4 & 5. The Raspberry Pi 0/1 is currently not supported.
+- Pi 3, 4 & 5. The Raspberry Pi 0/1/2 is currently not supported, the Pi Zero2w might be working.
 
-## Features
 
-- Runs [MagicMirror](https://github.com/MagicMirrorOrg/MagicMirror) out-of-the-box
+## Installation
+
+Variants for 32-bit (`armhf` in image name) and 64-bit (`arm64` in image name) are available.
+
+### Using Raspberry Pi Imager v2
+
+The new Raspberry Pi Imager v2 does not allow customizations (User/Password/SSH/WiFi/...) when loading an image file from disk. As alternative we provide an own content repository:
+
+1. Start the Pi Imager, select the "App Options" Button
+
+   <img src="./media/imagerv2_appopt1.png" width="400">
+
+2. Press the "Edit" Button beside "Content Repository"
+
+   <img src="./media/imagerv2_appopt2.png" width="400">
+
+3. Select "Use custom URL" and add `https://khassel.gitlab.io/magicmirroros/imager.json`, then press "Apply & Restart"
+
+   <img src="./media/imagerv2_appopt3.png" width="400">
+
+> You can also start Pi Imager from the command line with `rpi-imager --repo https://khassel.gitlab.io/magicmirroros/imager.json` so you can skip the above steps.
+
+4. After choosing your Device (Raspberry Pi Model) you have to select between `64-bit` and `32-bit` OS
+
+   <img src="./media/imagerv2_choose1.png" width="400">
+
+5. Select the image (recommended is the newest at the top)
+
+   <img src="./media/imagerv2_choose2.png" width="400">
+
+6. Follow the next steps (Storage/Customization) and finally write the selected image to your SD-Card
+
+### Using older versions of Raspberry Pi Imager or other SD-Card Writer
+
+Download the image file from [here](https://gitlab.com/khassel/magicmirroros/-/packages) and use the file with your Image Writer.
+
+### After boot from SD-Card
+
+1. With the first start the docker images are pulled which takes some time, you can follow this process by executing `journalctl --user -f`
+2. You find the custom files (config/css/modules) of MagicMirror² in the directories under `/opt/mm/mounts/`
+
+
+## Docker
+
+Under the hood MagicMirrorOS uses [this docker setup](https://gitlab.com/khassel/magicmirror).
+
+You find the docker setup at `/opt/mm/` on your Raspberry Pi. For more information about this setup, how you can start/stop the docker container, how to see the logs , ..., please refer to the [Documentation of this project](https://khassel.gitlab.io/magicmirror/).
+
+
+## Customization
+
+### Rotating the output
+
+- Option 1
+
+  - Edit the file `/opt/mm/run/.env` and add e.g. the following line `RANDR_PARAMS="--output HDMI-A-1 --transform 180"` to rotate the output by 180 degrees, or `RANDR_PARAMS="--output HDMI-A-1 --transform 90"` to rotate the output by 90 degrees, to see all possible options login to the container with `docker exec -it labwc bash` and then you can look at all the options available with `wlr-randr --help`. To get the parameter for `--output` you can call `wlr-randr`, you find the parameter in the first line (in this example `HDMI-A-1`).
+  - Restart the docker container by executing `docker compose up` in directory `/opt/mm/run`.
+
+  If you need to change the delay for the wlr-randr options to be applied, e.g. if the display is rotated when MagicMirror² is starting, it can result in a black screen. To avoid this, increase the delay (on slow systems e.g. pi < v4 you have to increase this up to 80s).
+
+  - Edit the file `/opt/mm/run/.env` and add e.g. the following line `RANDR_DELAY=10s` to apply the wlr-randr options after 10 seconds, the default value is 5s.
+  - Restart the docker container by executing `docker compose up` in directory `/opt/mm/run`.
+
+- Option 2
+
+  You can use css for rotating. Edit the file `/opt/mm/mounts/css/custom.css` and add the lines provided in [this forum post](https://forum.magicmirror.builders/topic/9707/save-performance-when-rotating-screen-e-g-on-raspberry-pi).
+
+### Changing timezone
+
+The setup tries to set the timezone automatically, if you need to change your local timezone:
+
+- Find your timezone in the "TZ database name" column on [Wikipedia](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)
+- `nano /opt/mm/run/compose.yaml` and add:
+
+  ```bash
+        environment:
+          TZ: <your timezone>
+  ```
+
+- Restart the docker container by executing `docker compose up` in directory `/opt/mm/run`.
 
 
 ## Developing
@@ -91,37 +146,5 @@ run_vagrant_build.sh [Variant]
 1. If needed, override existing config settings by creating a new file `src/config.local`. You can override all settings found in `src/config`. If you need to override the path to the Raspbian image to use for building MagicMirrorOS, override the path to be used in `ZIP_IMG`. By default, the most recent file matching `*-raspbian.zip` found in `src/image` will be used.
 2. Run `src/build_dist` as root.
 3. The final image will be created in `src/workspace`
-
-### Customization
-
-#### Rotating the output
-
-- Option 1
-
-  - Edit the file `/opt/mm/run/.env` and add e.g. the following line `RANDR_PARAMS="--output HDMI-A-1 --transform 180"` to rotate the output by 180 degrees, or `RANDR_PARAMS="--output HDMI-A-1 --transform 90"` to rotate the output by 90 degrees, to see all possible options login to the container with `docker exec -it labwc bash` and then you can look at all the options available with `wlr-randr --help`. To get the parameter for `--output` you can call `wlr-randr`, you find the parameter in the first line (in this example `HDMI-A-1`).
-  - Restart the docker container by executing `docker compose up` in directory `/opt/mm/run`.
-
-  If you need to change the delay for the wlr-randr options to be applied, e.g. if the display is rotated when MagicMirror is starting, it can result in a black screen. To avoid this, increase the delay (on slow systems e.g. pi < v4 you have to increase this up to 80s).
-
-  - Edit the file `/opt/mm/run/.env` and add e.g. the following line `RANDR_DELAY=10s` to apply the wlr-randr options after 10 seconds, the default value is 5s.
-  - Restart the docker container by executing `docker compose up` in directory `/opt/mm/run`.
-
-- Option 2
-
-  You can use css for rotating. Edit the file `/opt/mm/mounts/css/custom.css` and add the lines provided in [this forum post](https://forum.magicmirror.builders/topic/9707/save-performance-when-rotating-screen-e-g-on-raspberry-pi).
-
-#### Changing timezone
-
-The setup tries to set the timezone automatically, if you need to change your local timezone:
-
-- Find your timezone in the "TZ database name" column on [Wikipedia](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)
-- `nano /opt/mm/run/compose.yaml` and add:
-
-  ```bash
-        environment:
-          TZ: <your timezone>
-  ```
-
-- Restart the docker container by executing `docker compose up` in directory `/opt/mm/run`.
 
 > Code contribution would be appreciated!
