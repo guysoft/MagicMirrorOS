@@ -14,47 +14,25 @@ Variants for 32-bit (`armhf` in image name) and 64-bit (`arm64` in image name) a
 
 ### Using Raspberry Pi Imager v2
 
-The new Raspberry Pi Imager v2 does not allow customizations (User/Password/SSH/WiFi/...) when loading an image file from disk. As alternative we provide an own content repository:
+The new Raspberry Pi Imager v2 does not allow customizations (User/Password/SSH/WiFi/...) when loading an image file from disk. As alternative we provide an own content repository.
 
-1. Start the Pi Imager, select the "App Options" Button
+You find the content repository and a detailed description how to use it [here](https://gitlab.com/khassel/pi-imager).
 
-   <img src="./media/imagerv2_appopt1.png" width="400">
-
-2. Press the "Edit" Button beside "Content Repository"
-
-   <img src="./media/imagerv2_appopt2.png" width="400">
-
-3. Select "Use custom URL" and add `https://khassel.gitlab.io/magicmirroros/imager.json`, then press "Apply & Restart"
-
-   <img src="./media/imagerv2_appopt3.png" width="400">
-
-> You can also start Pi Imager from the command line with `rpi-imager --repo https://khassel.gitlab.io/magicmirroros/imager.json` so you can skip the above steps.
-
-4. After choosing your Device (Raspberry Pi Model) you have to select between `64-bit` and `32-bit` OS
-
-   <img src="./media/imagerv2_choose1.png" width="400">
-
-5. Select the image (recommended is the newest at the top)
-
-   <img src="./media/imagerv2_choose2.png" width="400">
-
-6. Follow the next steps (Storage/Customization) and finally write the selected image to your SD-Card
 
 ### Using older versions of Raspberry Pi Imager or other SD-Card Writer
 
 Download the image file from [here](https://gitlab.com/khassel/magicmirroros/-/packages) and use the file with your Image Writer.
 
-### After boot from SD-Card
 
-1. With the first start the docker images are pulled which takes some time, you can follow this process by executing `journalctl --user -f`
-2. You find the custom files (config/css/modules) of MagicMirror² in the directories under `/opt/mm/mounts/`
-
-
-## Docker
+## Docker and MagicMirror² files
 
 Under the hood MagicMirrorOS uses [this docker setup](https://gitlab.com/khassel/magicmirror).
 
 You find the docker setup at `/opt/mm/` on your Raspberry Pi. For more information about this setup, how you can start/stop the docker container, how to see the logs , ..., please refer to the [Documentation of this project](https://khassel.gitlab.io/magicmirror/).
+
+After the first start the docker images are pulled which takes some time, you can follow this process by executing `journalctl --user -f`.
+
+You find the custom files (config/css/modules) of MagicMirror² in the directories under `/opt/mm/mounts/`
 
 
 ## Customization
