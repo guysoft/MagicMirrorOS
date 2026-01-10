@@ -13,6 +13,11 @@ set -e
 source /common.sh
 install_cleanup_trap
 
+# make journal persistent
+mkdir -p /etc/systemd/journald.conf.d
+echo "[Journal]" > /etc/systemd/journald.conf.d/99-storage.conf
+echo "Storage=persistent" >> /etc/systemd/journald.conf.d/99-storage.conf
+
 apt-get update
 apt-get install -y git ca-certificates curl
 
