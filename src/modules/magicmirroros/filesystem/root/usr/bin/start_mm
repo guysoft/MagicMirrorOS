@@ -6,8 +6,8 @@ until $(curl --output /dev/null --silent --head --fail https://hub.docker.com );
 done
 
 # disable wlan power_save
-iw wlan0 set power_save off
+sudo iw wlan0 set power_save off
 
-su -c "/opt/mm/install/install.sh electron" "$(id -nu 1000)"
+/opt/mm/install/install.sh electron
 
 echo "Done"

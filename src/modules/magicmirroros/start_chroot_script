@@ -37,6 +37,10 @@ apt-get remove -y systemd-zram-generator
 apt-get clean
 rm -rf /var/lib/apt/lists/*
 
+echo "mm ALL=(ALL) NOPASSWD: /usr/sbin/iw wlan0 set power_save off" >> /etc/sudoers
+echo "mm ALL=(ALL) NOPASSWD: /usr/sbin/usermod -aG docker *" >> /etc/sudoers
+echo "mm ALL=(ALL) NOPASSWD: /usr/bin/docker *" >> /etc/sudoers
+
 usermod -aG docker "${BASE_USER}"
 
 chown "${BASE_USER}":"${BASE_USER}" /opt
